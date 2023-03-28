@@ -18,13 +18,13 @@ class GetItemDetailUseCase @Inject constructor(
 
     operator fun invoke(coinId: String): Flow<Resource<ItemDetail>> = flow {
         try {
-            emit(Resource.Loading())
+            emit(Resource.Loading<ItemDetail>())
             val item = repository.getItemsById(coinId).toItemDetail()
-            emit(Resource.Success(item))
+            emit(Resource.Success<ItemDetail>(item))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "Error occurred"))
+            emit(Resource.Error<ItemDetail>(e.localizedMessage ?: "Error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Internet Error"))
+            emit(Resource.Error<ItemDetail>("Internet Error"))
         }
     }
 }

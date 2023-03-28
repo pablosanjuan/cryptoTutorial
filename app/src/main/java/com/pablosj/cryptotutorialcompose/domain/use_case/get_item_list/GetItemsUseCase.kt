@@ -16,13 +16,13 @@ class GetItemsUseCase @Inject constructor(
 
     operator fun invoke(): Flow<Resource<List<Item>>> = flow {
         try {
-            emit(Resource.Loading())
+            emit(Resource.Loading<List<Item>>())
             val items = repository.getItemList().map { it.toItem() }
             emit(Resource.Success(items))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "Error occurred"))
+            emit(Resource.Error<List<Item>>(e.localizedMessage ?: "Error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Internet Error"))
+            emit(Resource.Error<List<Item>>("Internet Error"))
         }
     }
 }
